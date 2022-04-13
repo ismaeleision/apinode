@@ -8,7 +8,8 @@ async function getCarta(req, res) {
     if (!carta) {
       res.status(400).send({ msg: 'Error al obtener las cartas' });
     } else {
-      res.status(200).send(carta);
+      //el set header sirve para dar paso en angular
+      res.setHeader('Access-Control-Allow-Origin', '*').status(200).send(carta);
     }
   } catch (error) {
     res.status(500).send(error);
