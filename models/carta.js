@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const CartaSchema = Schema({
   id: {
-    type: Number,
+    type: String,
     require: true,
   },
   nombre: {
