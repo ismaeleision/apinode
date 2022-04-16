@@ -6,18 +6,6 @@ const CartaSchema = Schema({
     type: String,
     require: true,
   },
-  nombre: {
-    type: String,
-    require: true,
-  },
-  simbolo: {
-    type: String,
-    require: true,
-  },
-  descrip: {
-    type: String,
-    require: true,
-  },
   precio: {
     type: Number,
     require: true,
