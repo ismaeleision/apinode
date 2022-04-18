@@ -20,7 +20,7 @@ mongoose.connect(
 
         app.listen(port, () => {
           console.log(
-            `Servidor del API REST Magic esta funcionando en http://localhost:${port}`
+            `Servidor del API REST Magic Cards esta funcionando en http://localhost:${port}`
           );
         });
       }

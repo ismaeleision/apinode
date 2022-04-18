@@ -1,9 +1,8 @@
 const jwt = require('../services/jwt');
 const bcryptjs = require('bcryptjs');
 const user = require('../models/user');
-const fs = require('fs');
-const path = require('path');
 
+//Funcion que lleva el registro del usuario
 async function register(req, res) {
   const user = new User(req.body);
   const { email, password } = req.body;
@@ -26,6 +25,7 @@ async function register(req, res) {
   }
 }
 
+//Funcion que lleva el logueo del usuario y le entrega un token temporal
 async function login(req, res) {
   const { email, password } = req.body;
   try {
