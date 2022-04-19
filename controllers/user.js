@@ -40,7 +40,7 @@ async function login(req, res) {
     res
       .setHeader('Access-Control-Allow-Origin', '*')
       .status(200)
-      .send({ token: jwt.createToken(user, '12h') });
+      .send({ token: jwt.createToken(user, '12h'), email: user.email });
   } catch (error) {
     res.status(500).send(error);
   }
