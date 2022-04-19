@@ -8,8 +8,18 @@ app.use(express.urlencoded({ extended: true }));
 const carta_routes = require('./routes/carta');
 const user_routes = require('./routes/user');
 
+//para que angular le deje paso
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
 // Rutas base
-app.use('/api', carta_routes);
-app.use('/api', user_routes);
+app.use('', carta_routes);
+app.use('', user_routes);
 
 module.exports = app;
