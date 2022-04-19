@@ -12,7 +12,7 @@ async function register(req, res) {
     if (!password) throw { msg: 'Contraseña es obligatoria' };
 
     //Revisamos si el email esta en uso
-    const foundEmail = await UserFindOne({ email: email });
+    const foundEmail = await User.findOne({ email: email });
     if (foundEmail) throw { msg: 'El email esta en uso' };
 
     const salt = bcryptjs.genSaltSync(10);
