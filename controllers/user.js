@@ -1,6 +1,6 @@
 const jwt = require('../services/jwt');
 const bcryptjs = require('bcryptjs');
-const user = require('../models/user');
+const User = require('../models/user');
 
 //Funcion que lleva el registro del usuario
 async function register(req, res) {
