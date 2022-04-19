@@ -37,9 +37,16 @@ async function login(req, res) {
     const passwordSuccess = await bcryptjs.compare(password, user.password);
     if (!passwordSuccess) throw { msg: 'Error en el email o contraseña' };
 
-    res.status(200).send({ token: jwt.createToken(user, '12h') });
+    res
+      .setHeader('Access-Control-Allow-Origin', '*')
+      .setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+      )
+      .status(200)
+      .send({ token: jwt.createToken(user, '12h') });
   } catch (error) {
-    res.status(500).send(error);
+    res.setHeader('Access-Control-Allow-Origin', '*').status(500).send(error);
   }
 }
 

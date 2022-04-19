@@ -46,7 +46,7 @@ async function getCartaId(req, res) {
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
     } else {
-      res.status(200).send(carta);
+      res.setHeader('Access-Control-Allow-Origin', '*').status(200).send(carta);
     }
   } catch (error) {
     res.status(500).send(error);
@@ -61,7 +61,7 @@ async function getCartaSet(req, res) {
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
     } else {
-      res.status(200).send(carta);
+      res.setHeader('Access-Control-Allow-Origin', '*').status(200).send(carta);
     }
   } catch (error) {
     res.status(500).send(error);
