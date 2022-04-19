@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 
 //Funcion que lleva el registro del usuario
+//Funciona
 async function register(req, res) {
   const user = new User(req.body);
   const { email, password } = req.body;
@@ -26,6 +27,7 @@ async function register(req, res) {
 }
 
 //Funcion que lleva el logueo del usuario y le entrega un token temporal
+//Funciona
 async function login(req, res) {
   const { email, password } = req.body;
   try {
