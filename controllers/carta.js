@@ -3,8 +3,8 @@ const Carta = require('../models/carta');
 //Devuelve las primeras 50 criptos de la bd
 async function getCarta(req, res) {
   try {
-    //Paginar limite 60 y al pasar de pagina pasa hace skip a los siguiente 60
-    let perPage = 60,
+    //Paginar limite 20 y al pasar de pagina pasa hace skip a los siguiente 60
+    let perPage = 20,
       page = req.params.page;
     const carta = await Carta.find()
       .limit(perPage)
@@ -13,7 +13,6 @@ async function getCarta(req, res) {
     if (!carta) {
       res.status(400).send({ msg: 'Error al obtener las cartas' });
     } else {
-      //el set header sirve para dar paso en angular el asterisco es para darle paso en todas las rutas
       res.status(200).send(carta);
     }
   } catch (error) {
@@ -36,7 +35,7 @@ async function getTopValue(req, res) {
   }
 }
 
-//Devuelve la cripto por id
+//Devuelve la carta por id
 //Fumciona solo con el _id
 async function getCartaId(req, res) {
   try {
