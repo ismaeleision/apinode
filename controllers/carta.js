@@ -24,7 +24,7 @@ async function getCarta(req, res) {
 //obtiene la carta con mas valor
 async function getTopValue(req, res) {
   try {
-    const carta = await Carta.findOne().sort([['prices.eur', -1]]);
+    const carta = await Carta.findOne().sort(['prices.eur', -1]);
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
