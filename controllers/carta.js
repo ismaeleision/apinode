@@ -52,6 +52,26 @@ async function getCartaId(req, res) {
   }
 }
 
+//Cuenta el num total de resultados en la coleccion cartas
+async function getTotal(req, res) {
+  try {
+    const limite = await Carta.find().countDocuments();
+    let imite = limite / 20;
+    const paginas = [];
+    for (let i = 1; i < imite; i++) {
+      paginas.push({ i });
+    }
+    if (!paginas) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(paginas);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+//Filtra los resultados que coincidan con el set
 async function getCartaSet(req, res) {
   try {
     const setCarta = req.params.set;
@@ -179,6 +199,7 @@ module.exports = {
   getTopValue,
   getCartaId,
   getCartaSet,
+  getTotal,
   /*
   putCripto,
   upCripto,
