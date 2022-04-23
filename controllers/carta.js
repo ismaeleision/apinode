@@ -1,10 +1,9 @@
 const Carta = require('../models/carta');
 
-//Devuelve las primeras 50 criptos de la bd
 async function getCarta(req, res) {
   try {
-    //Paginar limite 20 y al pasar de pagina pasa hace skip a los siguiente 60
-    let perPage = 20,
+    //Paginar limite 12 y al pasar de pagina pasa hace skip a los siguiente 60
+    let perPage = 12,
       page = req.params.page;
     const carta = await Carta.find()
       .limit(perPage)
@@ -23,7 +22,7 @@ async function getCarta(req, res) {
 //obtiene la carta con mas valor
 async function getTopValue(req, res) {
   try {
-    const carta = await Carta.findOne().sort(['prices.eur', -1]);
+    const carta = await Carta.find().limit(25).sort(['prices.eur', -1]);
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
@@ -56,7 +55,7 @@ async function getCartaId(req, res) {
 async function getTotal(req, res) {
   try {
     const limite = await Carta.find().countDocuments();
-    let imite = limite / 20;
+    let imite = limite / 12;
     if (!imite) {
       res.status(400).send({ msg: 'Not found' });
     } else {
@@ -77,6 +76,38 @@ async function getCartaSet(req, res) {
       res.status(400).send({ msg: 'Not found' });
     } else {
       res.status(200).send(carta);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+async function getCantidadCartaSet(req, res) {
+  try {
+    const setCarta = req.params.set;
+    const total = await Carta.find({ set: setCarta }).countDocuments();
+    let limite = total / 12;
+
+    if (!limite) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send({ limite });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+//obtiene el codigo del set y su nombre
+async function getSets(req, res) {
+  try {
+    const set = await Carta.aggregate([
+      { $group: { _id: { set: '$set', set_name: '$set_name' } } },
+    ]);
+
+    if (!set) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(set);
     }
   } catch (error) {
     res.status(500).send(error);
@@ -196,6 +227,9 @@ module.exports = {
   getCartaId,
   getCartaSet,
   getTotal,
+  getCantidadCartaSet,
+  getSets,
+
   /*
   putCripto,
   upCripto,
