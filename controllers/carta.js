@@ -57,14 +57,10 @@ async function getTotal(req, res) {
   try {
     const limite = await Carta.find().countDocuments();
     let imite = limite / 20;
-    const paginas = [];
-    for (let i = 1; i < imite; i++) {
-      paginas.push({ i });
-    }
-    if (!paginas) {
+    if (!imite) {
       res.status(400).send({ msg: 'Not found' });
     } else {
-      res.status(200).send(paginas);
+      res.status(200).send({ imite });
     }
   } catch (error) {
     res.status(500).send(error);
