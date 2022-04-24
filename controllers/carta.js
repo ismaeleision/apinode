@@ -102,6 +102,7 @@ async function getSets(req, res) {
   try {
     const set = await Carta.aggregate([
       { $group: { _id: { set: '$set', set_name: '$set_name' } } },
+      { $sort: { set: -1 } },
     ]);
 
     if (!set) {
