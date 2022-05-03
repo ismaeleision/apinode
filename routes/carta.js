@@ -10,5 +10,6 @@ api.get('/carta/topvalue', carta.getTopValue); //No funciona
 api.get('/carta/set/:set', carta.getCartaSet);
 api.get('/carta/set/:set/total', carta.getCantidadCartaSet);
 api.get('/carta/set', carta.getSets);
+api.get('/buscador/:nombre', carta.buscador);
 
 module.exports = api;

@@ -115,112 +115,32 @@ async function getSets(req, res) {
   }
 }
 
-/*
-async function putCripto(req, res) {
-  const idCripto = req.params.id;
-  const params = req.body;
-
+//Obtiene 5 resultados que coinciden con el parametro
+async function buscador(req, res) {
   try {
-    const cripto = await Cripto.findByIdAndUpdate(idCripto, params);
+    const nombre = req.params.nombre;
 
-    if (!cripto) {
-      res.status(400).send({ msg: 'No se ha podido actualizar la cripto' });
+    //new regexp sirve para que ignore capital de las letras
+    const cartas = await Carta.find({
+      name: { $regex: new RegExp(nombre, 'i') },
+      oracle_text: { $regex: new RegExp(nombre, 'i') },
+      type_line: { $regex: new RegExp(nombre, 'i') },
+    })
+      .limit(5)
+      //ordena alfabeticamente
+      .sort({ name: 1 })
+      //filtra la informacion que se manda
+      .select({ _id: 1, name: 1, set_name: 1 });
+
+    if (!cartas) {
+      res.status(400).send({ msg: 'Not found' });
     } else {
-      res.status(200).send({ msg: 'Actualizacion completada' });
+      res.status(200).send(cartas);
     }
   } catch (error) {
     res.status(500).send(error);
   }
 }
-*/
-
-/*
-//Actualiza la subida del precio de la cripto
-async function upCripto(req, res) {
-  const idCripto = req.params.id;
-
-  try {
-    const cripto = await Cripto.findByIdAndUpdate(idCripto, {
-      $inc: { precio: 0.1 },
-    }).exec();
-
-    if (!cripto) {
-      res.status(400).send({ msg: 'No se ha podido actualizar la cripto' });
-    } else {
-      res.status(200).send({ msg: 'Actualizacion completada' });
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-*/
-
-/*
-//Actualiza la bajada del precio de la cripto
-async function downCripto(req, res) {
-  const idCripto = req.params.id;
-  try {
-    const cripto = await Cripto.findByIdAndUpdate(idCripto, {
-      $inc: { precio: -0.1 },
-    }).exec();
-
-    if (!cripto) {
-      res.status(400).send({ msg: 'No se ha podido actualizar la cripto' });
-    } else {
-      res.status(200).send({ msg: 'Actualizacion completada' });
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-*/
-
-/*
-//Añade una nueva cripto a la BD
-async function addCripto(req, res) {
-  const cripto = new Cripto();
-  const params = req.body;
-
-  cripto.id = params.id;
-  cripto.nombre = params.nombre;
-  cripto.simbolo = params.simbolo;
-  cripto.descrip = params.descrip;
-  cripto.precio = params.precio;
-  cripto.dia = params.dia;
-  cripto.capitalizacion = params.capitalizacion;
-
-  try {
-    const criptoStore = await cripto.save();
-
-    if (!criptoStore) {
-      res.status(400).send({ msg: 'No se ha guardado la cripto' });
-    } else {
-      res.status(200).send({ cripto: criptoStore });
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-*/
-
-/*
-//Elimina una cripto de la bd por id
-async function deleteCripto(req, res) {
-  const idCripto = req.params.id;
-
-  try {
-    const cripto = await Cripto.findByIdAndDelete(idCripto);
-
-    if (!cripto) {
-      res.status(404).send({ msg: 'No se ha podido eliminar la tarea' });
-    } else {
-      res.status(200).send({ msg: 'cripto eliminada' });
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-*/
 
 module.exports = {
   getCarta,
@@ -230,12 +150,5 @@ module.exports = {
   getTotal,
   getCantidadCartaSet,
   getSets,
-
-  /*
-  putCripto,
-  upCripto,
-  downCripto,
-  addCripto,
-   deleteCripto,
-  */
+  buscador,
 };
