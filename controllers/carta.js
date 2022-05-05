@@ -20,9 +20,13 @@ async function getCarta(req, res) {
 }
 
 //obtiene la carta con mas valor
+//Falta que ordene por euros
 async function getTopValue(req, res) {
   try {
-    const carta = await Carta.find().limit(25).sort(['prices.eur', -1]);
+    const carta = await Carta.find()
+      .limit(25)
+      .sort({ prices: -1 })
+      .select({ _id: 1, name: 1, image_uris: 1, prices: 1 });
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
@@ -119,7 +123,6 @@ async function getSets(req, res) {
 async function buscador(req, res) {
   try {
     const nombre = req.params.nombre;
-
     //new regexp sirve para que ignore capital de las letras
     const cartas = await Carta.find({
       name: { $regex: new RegExp(nombre, 'i') },
