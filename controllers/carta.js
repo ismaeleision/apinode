@@ -125,9 +125,11 @@ async function buscador(req, res) {
     const nombre = req.params.nombre;
     //new regexp sirve para que ignore capital de las letras
     const cartas = await Carta.find({
-      name: { $regex: new RegExp(nombre, 'i') },
-      oracle_text: { $regex: new RegExp(nombre, 'i') },
-      type_line: { $regex: new RegExp(nombre, 'i') },
+      $or: [
+        { name: { $regex: new RegExp(nombre, 'i') } },
+        { oracle_text: { $regex: new RegExp(nombre, 'i') } },
+        { type_line: { $regex: new RegExp(nombre, 'i') } },
+      ],
     })
       .limit(5)
       //ordena alfabeticamente
