@@ -147,6 +147,33 @@ async function buscador(req, res) {
   }
 }
 
+//Saca todas las imagenes e id que coincidan con la palabra que se pasa por parametro
+async function buscadorCoincidencias(req, res) {
+  try {
+    const nombre = req.params.nombre;
+    //new regexp sirve para que ignore capital de las letras
+    const cartas = await Carta.find({
+      $or: [
+        { name: { $regex: new RegExp(nombre, 'i') } },
+        { oracle_text: { $regex: new RegExp(nombre, 'i') } },
+        { type_line: { $regex: new RegExp(nombre, 'i') } },
+      ],
+    })
+      //ordena alfabeticamente
+      .sort({ name: 1 })
+      //filtra la informacion que se manda
+      .select({ _id: 1, image_uris: 1 });
+
+    if (!cartas) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(cartas);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 module.exports = {
   getCarta,
   getTopValue,
@@ -156,4 +183,5 @@ module.exports = {
   getCantidadCartaSet,
   getSets,
   buscador,
+  buscadorCoincidencias,
 };
