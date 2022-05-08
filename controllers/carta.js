@@ -2,12 +2,13 @@ const Carta = require('../models/carta');
 
 async function getCarta(req, res) {
   try {
-    //Paginar limite 12 y al pasar de pagina pasa hace skip a los siguiente 60
+    //Paginar limite 12 y al pasar de pagina pasa hace skip a los siguiente 12
     let perPage = 12,
       page = req.params.page;
     const carta = await Carta.find()
       .limit(perPage)
-      .skip(perPage * page);
+      .skip(perPage * page)
+      .select({ _id: 1, image_uris: { normal: 1 } });
 
     if (!carta) {
       res.status(400).send({ msg: 'Error al obtener las cartas' });
@@ -23,10 +24,17 @@ async function getCarta(req, res) {
 //Falta que ordene por euros
 async function getTopValue(req, res) {
   try {
-    const carta = await Carta.find()
-      .limit(25)
-      .sort({ prices: -1 })
-      .select({ _id: 1, name: 1, image_uris: 1, prices: 1 });
+    const carta = await Carta.aggregate([
+      {
+        $project: {
+          _id: 1,
+          image_uris: { normal: 1 },
+          prices: 1,
+        },
+      },
+      //{ $sortArray: { sortBy: { 'prices.usd': -1 } } },
+      { $limit: 15 },
+    ]);
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
@@ -162,7 +170,7 @@ async function buscadorCoincidencias(req, res) {
       //ordena alfabeticamente
       .sort({ name: 1 })
       //filtra la informacion que se manda
-      .select({ _id: 1, image_uris: 1 });
+      .select({ _id: 1, image_uris: { normal: 1 } });
 
     if (!cartas) {
       res.status(400).send({ msg: 'Not found' });
