@@ -7,6 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 // Cargar rutas
 const carta_routes = require('./routes/carta');
 const user_routes = require('./routes/user');
+const mazo_routes = require('./routes/mazo');
 
 //para que angular le deje paso
 app.use(function (req, res, next) {
@@ -21,5 +22,6 @@ app.use(function (req, res, next) {
 // Rutas base
 app.use('', carta_routes);
 app.use('', user_routes);
+app.use('', mazo_routes);
 
 module.exports = app;

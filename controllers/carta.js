@@ -82,27 +82,15 @@ async function getTotal(req, res) {
 async function getCartaSet(req, res) {
   try {
     const setCarta = req.params.set;
-    const carta = await Carta.find({ set: setCarta });
+    const carta = await Carta.find({ set: setCarta }).select({
+      _id: 1,
+      image_uris: { normal: 1 },
+    });
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
     } else {
       res.status(200).send(carta);
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-async function getCantidadCartaSet(req, res) {
-  try {
-    const setCarta = req.params.set;
-    const total = await Carta.find({ set: setCarta }).countDocuments();
-    let limite = total / 12;
-
-    if (!limite) {
-      res.status(400).send({ msg: 'Not found' });
-    } else {
-      res.status(200).send({ limite });
     }
   } catch (error) {
     res.status(500).send(error);
@@ -188,7 +176,6 @@ module.exports = {
   getCartaId,
   getCartaSet,
   getTotal,
-  getCantidadCartaSet,
   getSets,
   buscador,
   buscadorCoincidencias,
