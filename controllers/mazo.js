@@ -17,7 +17,27 @@ async function nuevoMazo(req, res) {
 
 async function getMazos(req, res) {
   try {
-    const mazos = await Mazo.find();
+    const user_email = req.body;
+    const mazos = await Mazo.find({ user_email: user_email }).select({
+      _id: 1,
+      nombre: 1,
+    });
+
+    if (!mazos) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(mazos);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+async function getMazo(req, res) {
+  try {
+    const user_email = req.body;
+    const id = req.params.id;
+    const mazos = await Mazo.find({ user_email: user_email, _id: id });
 
     if (!mazos) {
       res.status(400).send({ msg: 'Not found' });
@@ -51,6 +71,7 @@ function protected(req, res) {
 module.exports = {
   nuevoMazo,
   getMazos,
+  getMazo,
   añadirCartaMazo,
   protected,
 };
