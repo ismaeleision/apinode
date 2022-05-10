@@ -17,7 +17,7 @@ async function nuevoMazo(req, res) {
 
 async function getMazos(req, res) {
   try {
-    const user_email = req.body;
+    const user_email = req.params.user_email;
     const mazos = await Mazo.find({ user_email: user_email }).select({
       _id: 1,
       nombre: 1,
@@ -35,7 +35,7 @@ async function getMazos(req, res) {
 
 async function getMazo(req, res) {
   try {
-    const user_email = req.body;
+    const user_email = req.body.user_email;
     const id = req.params.id;
     const mazos = await Mazo.find({ user_email: user_email, _id: id });
 
