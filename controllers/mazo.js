@@ -37,7 +37,7 @@ async function getMazo(req, res) {
   try {
     const user_email = req.body.user_email;
     const id = req.params.id;
-    const mazos = await Mazo.find({ user_email: user_email, _id: id });
+    const mazos = await Mazo.find({ _id: id });
 
     if (!mazos) {
       res.status(400).send({ msg: 'Not found' });
