@@ -20,32 +20,6 @@ async function getCarta(req, res) {
   }
 }
 
-//obtiene la carta con mas valor
-//Falta que ordene por euros
-async function getTopValue(req, res) {
-  try {
-    const carta = await Carta.aggregate([
-      {
-        $project: {
-          _id: 1,
-          image_uris: { normal: 1 },
-          prices: 1,
-        },
-      },
-      //{ $sortArray: { sortBy: { 'prices.usd': -1 } } },
-      { $limit: 15 },
-    ]);
-
-    if (!carta) {
-      res.status(400).send({ msg: 'Not found' });
-    } else {
-      res.status(200).send(carta);
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-
 //Devuelve la carta por id
 //Fumciona solo con el _id
 async function getCartaId(req, res) {
@@ -63,29 +37,20 @@ async function getCartaId(req, res) {
   }
 }
 
-//Cuenta el num total de resultados en la coleccion cartas
-async function getTotal(req, res) {
-  try {
-    const limite = await Carta.find().countDocuments();
-    let imite = limite / 12;
-    if (!imite) {
-      res.status(400).send({ msg: 'Not found' });
-    } else {
-      res.status(200).send({ imite });
-    }
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-
 //Filtra los resultados que coincidan con el set
 async function getCartaSet(req, res) {
   try {
+    let perPage = 12,
+      page = req.params.page;
     const setCarta = req.params.set;
-    const carta = await Carta.find({ set: setCarta }).select({
-      _id: 1,
-      image_uris: { normal: 1 },
-    });
+
+    const carta = await Carta.find({ set: setCarta })
+      .limit(perPage)
+      .skip(perPage * page)
+      .select({
+        _id: 1,
+        image_uris: { normal: 1 },
+      });
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
@@ -102,7 +67,7 @@ async function getSets(req, res) {
   try {
     const set = await Carta.aggregate([
       { $group: { _id: { set: '$set', set_name: '$set_name' } } },
-      { $sort: { set: -1 } },
+      { $sort: { set: 1 } },
     ]);
 
     if (!set) {
@@ -170,12 +135,37 @@ async function buscadorCoincidencias(req, res) {
   }
 }
 
+//obtiene la carta con mas valor
+//Falta que ordene por euros
+async function getTopValue(req, res) {
+  try {
+    const carta = await Carta.aggregate([
+      {
+        $project: {
+          _id: 1,
+          image_uris: { normal: 1 },
+          prices: 1,
+        },
+      },
+      //{ $sortArray: { sortBy: { 'prices.usd': -1 } } },
+      { $limit: 15 },
+    ]);
+
+    if (!carta) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(carta);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 module.exports = {
   getCarta,
   getTopValue,
   getCartaId,
   getCartaSet,
-  getTotal,
   getSets,
   buscador,
   buscadorCoincidencias,
