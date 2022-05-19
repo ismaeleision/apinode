@@ -1,33 +1,15 @@
 const Mazo = require('../models/mazo');
 
 async function nuevoMazo(req, res) {
-  const nombre = req.body;
+  const id = req.body;
 
   try {
-    if (!nombre) throw { msg: 'Nombre del mazo es obligatorio' };
-    const mazo = new Mazo(nombre);
+    if (!id) throw { msg: 'Hace falta el id del usuario' };
+    const mazo = new Mazo(id);
     //No importa que el nombre del mazo este repetido, si el que se creen excesivamenete
     mazo.save();
 
     res.status(200).send(mazo);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
-
-async function getMazos(req, res) {
-  try {
-    const user_email = req.params.user_email;
-    const mazos = await Mazo.find({ user_email: user_email }).select({
-      _id: 1,
-      nombre: 1,
-    });
-
-    if (!mazos) {
-      res.status(400).send({ msg: 'Not found' });
-    } else {
-      res.status(200).send(mazos);
-    }
   } catch (error) {
     res.status(500).send(error);
   }
@@ -73,5 +55,6 @@ module.exports = {
   getMazos,
   getMazo,
   añadirCartaMazo,
+  deleteMazo,
   protected,
 };
