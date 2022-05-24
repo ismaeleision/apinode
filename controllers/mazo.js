@@ -53,12 +53,17 @@ async function getMazo(req, res) {
 
 async function añadirCartaMazo(req, res) {
   try {
-    const id = req.body._id;
-    const carta = req.body.carta; //coge la carta del body del form
-    const mazo = await Mazo.findOne({ _id: id }); //busca un mazo que coincida con el id del mazo del form
+    const id = req.params.id;
+    const carta = req.body._id; //coge la carta del body del form
+    const mazo = await Mazo.findOneAndUpdate(
+      { _id: id },
+      { $push: { cartas: carta } }
+    ); //busca un mazo que coincida con el id del mazo del form
 
     if (mazo) {
-      mazo.updateOne({ _id: 1 }, { $push: { cartas: carta } }); //Si el mazo existe mete la carta en el array cartas
+      res.status(200).send(mazo);
+    } else {
+      res.status(400).send({ msg: 'Not found' });
     }
   } catch (error) {
     res.status(500).send(error);
