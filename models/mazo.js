@@ -16,7 +16,7 @@ const MazoSchema = Schema({
     require: false,
   },
   cartas: {
-    type: [], //deberia crear un tipo array vacio para ir llenando de id de las cartas y quizá image_uris.normal
+    type: Array, //deberia crear un tipo array vacio para ir llenando de id de las cartas y quizá image_uris.normal
     require: false,
   },
 });

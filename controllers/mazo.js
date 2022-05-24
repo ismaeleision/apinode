@@ -54,7 +54,7 @@ async function getMazo(req, res) {
 async function añadirCartaMazo(req, res) {
   try {
     const id = req.params.id;
-    const carta = req.body._id; //coge la carta del body del form
+    const carta = req.body; //coge la carta del body del form
     const mazo = await Mazo.findOneAndUpdate(
       { _id: id },
       { $push: { cartas: carta } }
