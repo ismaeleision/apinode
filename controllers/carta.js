@@ -111,6 +111,8 @@ async function buscador(req, res) {
 //Saca todas las imagenes e id que coincidan con la palabra que se pasa por parametro
 async function buscadorCoincidencias(req, res) {
   try {
+    let perPage = 12,
+      page = req.params.page;
     const nombre = req.params.nombre;
     //new regexp sirve para que ignore capital de las letras
     const cartas = await Carta.find({
@@ -120,6 +122,8 @@ async function buscadorCoincidencias(req, res) {
         { type_line: { $regex: new RegExp(nombre, 'i') } },
       ],
     })
+      .limit(perPage)
+      .skip(perPage * page)
       //ordena alfabeticamente
       .sort({ name: 1 })
       //filtra la informacion que se manda

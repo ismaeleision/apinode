@@ -9,6 +9,6 @@ api.get('/carta/topvalue', carta.getTopValue); //No funciona
 api.get('/carta/set/:set/:page', carta.getCartaSet);
 api.get('/carta/set', carta.getSets);
 api.get('/buscador/:nombre', carta.buscador);
-api.get('/buscadorc/:nombre', carta.buscadorCoincidencias);
+api.get('/buscadorc/:nombre/:page', carta.buscadorCoincidencias);
 
 module.exports = api;
