@@ -1,4 +1,5 @@
 const Carta = require('../models/carta');
+const GraficoController = require('../controllers/grafico');
 
 async function getCarta(req, res) {
   try {
@@ -26,6 +27,8 @@ async function getCartaId(req, res) {
   try {
     const idCarta = req.params.id;
     const carta = await Carta.findById(idCarta);
+
+    GraficoController.anadirPrecio(idCarta);
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
