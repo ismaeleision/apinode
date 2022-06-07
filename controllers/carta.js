@@ -143,9 +143,11 @@ async function buscadorCoincidencias(req, res) {
 //Falta que ordene por euros
 async function getTopValue(req, res) {
   try {
+    const limite = await Carta.find().countDocuments();
+    let random = Math.floor(Math.random() * limite);
     const carta = await Carta.find()
+      .skip(random)
       .limit(5)
-      .sort({ prices: 1 })
       .select({
         _id: 1,
         image_uris: { normal: 1 },
