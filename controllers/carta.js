@@ -143,17 +143,32 @@ async function buscadorCoincidencias(req, res) {
 //Falta que ordene por euros
 async function getTopValue(req, res) {
   try {
-    const carta = await Carta.aggregate([
-      {
-        $project: {
-          _id: 1,
-          image_uris: { normal: 1 },
-          prices: 1,
-        },
-      },
-      //{ $sortArray: { sortBy: { 'prices.usd': -1 } } },
-      { $limit: 15 },
-    ]);
+    const carta = await Carta.find()
+      .limit(5)
+      .sort({ prices: 1 })
+      .select({
+        _id: 1,
+        image_uris: { normal: 1 },
+      });
+
+    if (!carta) {
+      res.status(400).send({ msg: 'Not found' });
+    } else {
+      res.status(200).send(carta);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+//Da un id aleatorio que se usara en un boton para redirigir a la carta del id
+async function aleatorio(req, res) {
+  try {
+    const limite = await Carta.find().countDocuments();
+    let random = Math.floor(Math.random() * limite);
+    const carta = await Carta.findOne().skip(random).select({
+      _id: 1,
+    });
 
     if (!carta) {
       res.status(400).send({ msg: 'Not found' });
@@ -173,4 +188,5 @@ module.exports = {
   getSets,
   buscador,
   buscadorCoincidencias,
+  aleatorio,
 };

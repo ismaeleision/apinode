@@ -10,5 +10,6 @@ api.get('/carta/set/:set/:page', carta.getCartaSet);
 api.get('/carta/set', carta.getSets);
 api.get('/buscador/:nombre', carta.buscador);
 api.get('/buscadorc/:nombre/:page', carta.buscadorCoincidencias);
+api.get('/random', carta.aleatorio);
 
 module.exports = api;
