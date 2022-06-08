@@ -182,16 +182,20 @@ async function aleatorio(req, res) {
   }
 }
 
+//No funciona y no entiendo porque
 async function update(req, res) {
-  const id = req.params.id;
-  const precio = req.body; //coge el precio del body del form
-  const carta = await Carta.findByIdAndUpdate(id, { prices: precio });
-  await carta.save();
+  try {
+    const id = req.params.id;
+    const precio = req.body; //coge el precio del body del form
+    const carta = await Carta.findOneAndUpdate({ _id: id }, { prices: precio });
 
-  if (carta) {
-    res.status(200).send(carta);
-  } else {
-    res.status(400).send({ msg: 'Not found' });
+    if (carta) {
+      res.status(200).send(carta);
+    } else {
+      res.status(400).send({ msg: 'Not found' });
+    }
+  } catch (error) {
+    res.status(500).send(error);
   }
 }
 
