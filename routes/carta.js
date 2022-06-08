@@ -5,7 +5,7 @@ const api = express.Router();
 
 api.get('/carta/page/:page', carta.getCarta);
 api.get('/carta/id/:id', carta.getCartaId);
-api.get('/carta/topvalue', carta.getTopValue); //No funciona
+api.get('/carta/topvalue', carta.getTopValue); 
 api.get('/carta/set/:set/:page', carta.getCartaSet);
 api.get('/carta/set', carta.getSets);
 api.get('/buscador/:nombre', carta.buscador);

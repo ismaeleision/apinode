@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 const carta_routes = require('./routes/carta');
 const user_routes = require('./routes/user');
 const mazo_routes = require('./routes/mazo');
+const grafico_routes = require('./routes/grafico');
 
 //para que angular le deje paso
 app.use(function (req, res, next) {
@@ -23,5 +24,6 @@ app.use(function (req, res, next) {
 app.use('', carta_routes);
 app.use('', user_routes);
 app.use('', mazo_routes);
+app.use('', grafico_routes);
 
 module.exports = app;
