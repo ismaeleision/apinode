@@ -49,7 +49,11 @@ async function getGrafico(req, res) {
     if (grafico) {
       res.status(200).send(grafico);
     } else {
-      res.status(400).send({ msg: 'error' });
+      //crea el mazo si no existe
+      const x = new Grafico();
+      x.id = id;
+      x.save();
+      res.status(200).send({ msg: 'Grafica creada' + x });
     }
   } catch (error) {
     res.status(500).send(error);
