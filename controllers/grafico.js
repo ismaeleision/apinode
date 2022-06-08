@@ -42,7 +42,22 @@ async function anadirPrecio(req, res) {
   }
 }
 
+async function getGrafico(req, res) {
+  try {
+    const id = req.params.id;
+    const grafico = await Grafico.findOne({ id: id });
+    if (grafico) {
+      res.status(200).send(grafico);
+    } else {
+      res.status(400).send({ msg: 'error' });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 //Para exportar las funciones get,post,delete,update
 module.exports = {
   anadirPrecio,
+  getGrafico,
 };
