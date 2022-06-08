@@ -182,6 +182,19 @@ async function aleatorio(req, res) {
   }
 }
 
+async function update(req, res) {
+  const id = req.params.id;
+  const precio = req.body; //coge el precio del body del form
+  const carta = await Carta.findByIdAndUpdate(id, { prices: precio });
+  await carta.save();
+
+  if (carta) {
+    res.status(200).send(carta);
+  } else {
+    res.status(400).send({ msg: 'Not found' });
+  }
+}
+
 module.exports = {
   getCarta,
   getTopValue,
@@ -191,4 +204,5 @@ module.exports = {
   buscador,
   buscadorCoincidencias,
   aleatorio,
+  update,
 };
