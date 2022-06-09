@@ -1,0 +1,28 @@
+{
+  "name": "express",
+  "version": "0.0.1",
+  "description": "Rest API Curso",
+  "main": "index.js",
+  "author": "Agustín Navarro Galdon",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^3.8.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.2",
+    "mongodb": "^4.5.0",
+    "mongoose": "^5.13.14",
+    "multiparty": "^4.2.3",
+    "ng2-charts": "^3.0.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "keywords": []
+}
