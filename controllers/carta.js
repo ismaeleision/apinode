@@ -187,7 +187,17 @@ async function update(req, res) {
   try {
     const id = req.params.id;
     const precio = req.body; //coge el precio del body del form
-    const carta = await Carta.findOneAndUpdate({ _id: id }, { prices: precio });
+    const carta = await Carta.findOneAndUpdate(
+      { _id: id },
+      {
+        prices: {
+          usd: precio.usd,
+          us_foil: precio.us_foil,
+          eur: precio.eur,
+          eur_foil: precio.eur_foil,
+        },
+      }
+    );
 
     if (carta) {
       res.status(200).send(carta);
