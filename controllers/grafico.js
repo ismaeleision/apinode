@@ -14,13 +14,13 @@ async function anadirPrecio(req, res) {
         //deberia buscar el que coincida con el id, borrar el ultimo dato y meter el nuevo
         grafico = await Grafico.findOneAndUpdate(
           { id: id },
-          { $pop: { precios: 1 } }
+          { $pop: { precios: -1 } }
         );
-        grafico = await Grafico.findOneAndUpdate(
+        let x = await Grafico.findOneAndUpdate(
           { id: id },
           { $push: { precios: precio } }
         );
-        res.status(200).send(grafico);
+        res.status(200).send(x);
       } else {
         //Si no hay 5 registros añade el nuevo sin mas
         grafico = await Grafico.findOneAndUpdate(
